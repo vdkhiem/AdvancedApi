@@ -11,6 +11,7 @@ namespace ScreenSoapAPIClient
 {
 	class Program
 	{
+		private static Screen context;
 		/// <summary>
 		/// Prerequisite for screen base soap API
 		/// 1.Generate the WSDL File of the Web Services
@@ -21,7 +22,7 @@ namespace ScreenSoapAPIClient
 		/// <param name="args"></param>
 		static void Main(string[] args)
 		{
-			var context = new Screen
+			context = new Screen
 			{
 				CookieContainer = new System.Net.CookieContainer(),
 				AllowAutoRedirect = AcumaticaApi.AllowAutoRedirect,
@@ -34,14 +35,40 @@ namespace ScreenSoapAPIClient
 
 			Console.WriteLine(result);
 
+			InsertUser();
+
+			Console.ReadLine();
+
+		}
+
+		private static void InsertUser()
+		{
 			var userScreen = context.SM201010GetSchema();
 			context.SM201010Clear();
-			
+
 			context.SM201010Submit(
 				new Command[]
 				{
-					new Value {Value = "sp4", LinkedCommand = userScreen.UserInformation.Login},
-					new Value {Value = "sp@4", LinkedCommand = userScreen.UserInformation.Email},
+					userScreen.Actions.InsertUsers,
+					new Value {Value = "sp8", LinkedCommand = userScreen.UserInformation.Login},
+					new Value {Value = "sp@8", LinkedCommand = userScreen.UserInformation.Email},
+					new Value {Value = "MYOB", LinkedCommand = userScreen.ExternalIdentities.ProviderName},
+					new Value {Value = "my-user-key8", LinkedCommand = userScreen.ExternalIdentities.UserKey},
+					new Value {Value = true.ToString(),LinkedCommand = userScreen.ExternalIdentities.Active},
+					userScreen.Actions.SaveUsers
+				});
+			Console.WriteLine("Inserted user");
+		}
+
+		private static void UpdatePartnerUserIdentity()
+		{
+			var userScreen = context.SM201010GetSchema();
+			context.SM201010Clear();
+
+			context.SM201010Submit(
+				new Command[]
+				{
+					new Value {Value = "sp5", LinkedCommand = userScreen.UserInformation.Login},
 					new Value {Value = "MYOB", LinkedCommand = userScreen.ExternalIdentities.ProviderName},
 					new Value {Value = "my-user-key", LinkedCommand = userScreen.ExternalIdentities.UserKey},
 					new Value
@@ -52,8 +79,6 @@ namespace ScreenSoapAPIClient
 					userScreen.Actions.SaveUsers
 				});
 			Console.WriteLine("Updated Partner User Identity");
-			Console.ReadLine();
-
 		}
 	}
 
@@ -62,8 +87,8 @@ namespace ScreenSoapAPIClient
 		public const bool AllowAutoRedirect = true;
 		public const bool EnableDecompression = true;
 		public const int WebServiceTimeout = 10000000;
-		public const string WebServiceUrl = "https://localhost:44400/Soap/USERS.asmx";
-		//public const string WebServiceUrl = "http://localhost:44100/Soap/USERS.asmx";
+		//public const string WebServiceUrl = "https://localhost:44400/Soap/USERS.asmx";
+		public const string WebServiceUrl = "http://localhost:44100/Soap/USERS.asmx";
 
 		public const string UserName = "admin@demonz";
 		public const string Password = "password01";
