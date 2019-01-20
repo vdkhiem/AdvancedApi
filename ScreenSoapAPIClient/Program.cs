@@ -88,9 +88,13 @@ namespace ScreenSoapAPIClient
 		public const bool EnableDecompression = true;
 		public const int WebServiceTimeout = 10000000;
 		//public const string WebServiceUrl = "https://localhost:44400/Soap/USERS.asmx";
-		public const string WebServiceUrl = "http://localhost:44100/Soap/USERS.asmx";
+		//public const string WebServiceUrl = "http://localhost:44100/Soap/USERS.asmx";
+		public const string WebServiceUrl = "https://dkvops2.dev.myob-edops.com/soap/api.asmx";
 
-		public const string UserName = "admin@demonz";
-		public const string Password = "password01";
+		public const string UserName = "admin";
+		public const string Password = "n#%b3346oN69nY7O09ia0A";
+
+		//public const string UserName = "admin@demonz";
+		//public const string Password = "password01";
 	}
 }
